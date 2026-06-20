@@ -40,6 +40,17 @@ describe('cavaquinho Chords', () => {
     it('Should have 4 strings', () => expect(cavaquinho.main.strings).toEqual(4));
   });
 
+  describe('D minor fingering', () => {
+    const position = getChord('D', 'minor').positions[1];
+
+    it('position 2 should use four independent fingers', () => {
+      expect(frets(position)).toEqual(processString('3233'));
+      expect(fingers(position)).toEqual(processString('2134'));
+      expect(position.barres).toBeUndefined();
+      expect(position.capo).toBeUndefined();
+    });
+  });
+
   describe('Dominant 7 positions', () => {
     const expandedPositionCounts = {
       A: 12,
