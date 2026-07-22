@@ -31,6 +31,7 @@ export const suffixFormulaMap = {
   dim7: { allowed: [0, 3, 6, 9], required: [3, 6, 9] },
   sus2: { allowed: [0, 2, 7], required: [2] },
   sus4: { allowed: [0, 5, 7], required: [5] },
+  '7sus4': { allowed: [0, 5, 7, 10], required: [0, 5, 10] },
 };
 
 export const getChord = (key, suffix) =>

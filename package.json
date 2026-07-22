@@ -10,7 +10,8 @@
     "precommit": "lint-staged",
     "prepublish": "npm run build",
     "prettier": "prettier --single-quote --write \"src/**/*.{js,jsx}\"",
-    "test:coverage": "jest src --coverage --runInBand"
+    "test:coverage": "jest src --coverage --runInBand",
+    "audit:cavaquinho-suffixes": "node scripts/audit-cavaquinho-suffixes.js"
   },
   "repository": {
     "type": "git",
