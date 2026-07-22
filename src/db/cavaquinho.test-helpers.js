@@ -1,5 +1,6 @@
 import cavaquinho from './cavaquinho';
 import { chord2midi, processString } from '../tools';
+import { chordDefinitions } from './cavaquinho/chordTheory';
 
 export const noteNumbers = {
   C: 0,
@@ -16,23 +17,15 @@ export const noteNumbers = {
   B: 11,
 };
 
-export const suffixFormulaMap = {
-  major: { allowed: [0, 4, 7], required: [4] },
-  minor: { allowed: [0, 3, 7], required: [3] },
-  6: { allowed: [0, 4, 7, 9], required: [4, 9] },
-  m6: { allowed: [0, 3, 7, 9], required: [0, 3, 9] },
-  7: { allowed: [0, 4, 7, 10], required: [4, 10] },
-  9: { allowed: [0, 2, 4, 7, 10], required: [2, 4] },
-  add9: { allowed: [0, 2, 4, 7], required: [0, 2, 4] },
-  maj7: { allowed: [0, 4, 7, 11], required: [4, 11] },
-  m7: { allowed: [0, 3, 7, 10], required: [3, 10] },
-  m7b5: { allowed: [0, 3, 6, 10], required: [3, 6, 10] },
-  dim: { allowed: [0, 3, 6, 9], required: [3, 6] },
-  dim7: { allowed: [0, 3, 6, 9], required: [3, 6, 9] },
-  sus2: { allowed: [0, 2, 7], required: [2] },
-  sus4: { allowed: [0, 5, 7], required: [5] },
-  '7sus4': { allowed: [0, 5, 7, 10], required: [0, 5, 10] },
-};
+export const suffixFormulaMap = Object.fromEntries(
+  Object.entries(chordDefinitions).map(([suffix, definition]) => [
+    suffix,
+    {
+      allowed: definition.sourceIntervals || definition.intervals,
+      required: definition.sourceRequired || definition.essential,
+    },
+  ])
+);
 
 export const getChord = (key, suffix) =>
   cavaquinho.chords[key].find((chord) => chord.suffix === suffix);

@@ -14,4 +14,9 @@ export default [
   'm6',
   '9',
   'add9',
+  'aug',
+  '69',
+  'm9',
+  'maj9',
+  'madd9',
 ];
