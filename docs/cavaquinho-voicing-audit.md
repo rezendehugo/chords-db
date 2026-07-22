@@ -40,6 +40,6 @@ notas externas.
 
 - `sus2`: todas as raízes passam a oferecer entre 6 e 7 shapes.
 - `m7`: todas as raízes passam a oferecer entre 9 e 13 shapes.
-- `7`: Db, Eb, Gb, Ab, Bb e B continuam com apenas 2 shapes porque o corpus não
+- `7`: Db, Eb, Gb, Ab e Bb continuam com apenas 2 shapes porque o corpus não
   contém outra posição compatível. Nenhum shape é renomeado para preencher essa
   lacuna artificialmente.
