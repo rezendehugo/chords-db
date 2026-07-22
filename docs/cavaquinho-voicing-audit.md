@@ -30,3 +30,16 @@ Ele nunca é reutilizado automaticamente.
 Entradas sem cobertura permanecem definidas no domínio e no metadata, mas não
 recebem digitações inventadas. Uma fonte verificável deve ser adicionada antes
 de publicar shapes para esses acordes.
+
+## Expansão de cobertura rasa
+
+O reaproveitamento determinístico também compara posições físicas já publicadas
+com as notas e tons essenciais de `sus2` e `m7`. A expansão preserva a posição
+original quando já pertence ao acorde e acrescenta apenas equivalências sem
+notas externas.
+
+- `sus2`: todas as raízes passam a oferecer entre 6 e 7 shapes.
+- `m7`: todas as raízes passam a oferecer entre 9 e 13 shapes.
+- `7`: Db, Eb, Gb, Ab, Bb e B continuam com apenas 2 shapes porque o corpus não
+  contém outra posição compatível. Nenhum shape é renomeado para preencher essa
+  lacuna artificialmente.
