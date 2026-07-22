@@ -18,6 +18,7 @@ const noteNumbers = {
 const derivedSuffixes = {
   m6: { allowed: [0, 3, 7, 9], required: [0, 3, 9] },
   add9: { allowed: [0, 2, 4, 7], required: [0, 2, 4] },
+  '7sus4': { allowed: [0, 5, 7, 10], required: [0, 5, 10] },
 };
 
 const fretValues = (position) =>

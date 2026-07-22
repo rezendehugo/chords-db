@@ -8,6 +8,7 @@ export default [
   'dim',
   'dim7',
   'sus4',
+  '7sus4',
   'sus2',
   '6',
   'm6',
