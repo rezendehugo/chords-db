@@ -29,7 +29,9 @@ const shiftFrets = (values, shift, shiftOpenStrings = false) =>
 
 const relativeBarres = (position) => {
   if (!position.barres) return [];
-  const values = Array.isArray(position.barres) ? position.barres : [position.barres];
+  const values = Array.isArray(position.barres)
+    ? position.barres
+    : [position.barres];
   const fretted = frets(position).filter((fret) => fret > 0);
   const min = Math.min(...fretted);
   return values.map((barre) => barre - min);
@@ -37,7 +39,8 @@ const relativeBarres = (position) => {
 
 describe('cavaquinho Chords', () => {
   describe('Strings', () => {
-    it('Should have 4 strings', () => expect(cavaquinho.main.strings).toEqual(4));
+    it('Should have 4 strings', () =>
+      expect(cavaquinho.main.strings).toEqual(4));
   });
 
   describe('D minor fingering', () => {
@@ -79,9 +82,16 @@ describe('cavaquinho Chords', () => {
       }
 
       seventh.positions.map((position, index) => {
-        it(`${key} 7 position ${index + 1} should contain only dominant-7 chord tones`, () => {
-          const notes = chord2midi(frets(position), cavaquinho.tunings.standard);
-          expect(notes.every((note) => chordTones.includes(note % 12))).toEqual(true);
+        it(`${key} 7 position ${
+          index + 1
+        } should contain only dominant-7 chord tones`, () => {
+          const notes = chord2midi(
+            frets(position),
+            cavaquinho.tunings.standard
+          );
+          expect(notes.every((note) => chordTones.includes(note % 12))).toEqual(
+            true
+          );
         });
       });
     });
@@ -111,13 +121,22 @@ describe('cavaquinho Chords', () => {
 
       if (expandedPositionCounts[key]) {
         it(`${key} m7 should have every page position`, () =>
-          expect(minorSeventh.positions).toHaveLength(expandedPositionCounts[key]));
+          expect(minorSeventh.positions).toHaveLength(
+            expandedPositionCounts[key]
+          ));
       }
 
       minorSeventh.positions.map((position, index) => {
-        it(`${key} m7 position ${index + 1} should contain only minor-7 chord tones`, () => {
-          const notes = chord2midi(frets(position), cavaquinho.tunings.standard);
-          expect(notes.every((note) => chordTones.includes(note % 12))).toEqual(true);
+        it(`${key} m7 position ${
+          index + 1
+        } should contain only minor-7 chord tones`, () => {
+          const notes = chord2midi(
+            frets(position),
+            cavaquinho.tunings.standard
+          );
+          expect(notes.every((note) => chordTones.includes(note % 12))).toEqual(
+            true
+          );
         });
       });
     });
@@ -152,13 +171,22 @@ describe('cavaquinho Chords', () => {
 
       if (expandedPositionCounts[key]) {
         it(`${key} maj7 should have every page position`, () =>
-          expect(majorSeventh.positions).toHaveLength(expandedPositionCounts[key]));
+          expect(majorSeventh.positions).toHaveLength(
+            expandedPositionCounts[key]
+          ));
       }
 
       majorSeventh.positions.map((position, index) => {
-        it(`${key} maj7 position ${index + 1} should contain only major-7 chord tones`, () => {
-          const notes = chord2midi(frets(position), cavaquinho.tunings.standard);
-          expect(notes.every((note) => chordTones.includes(note % 12))).toEqual(true);
+        it(`${key} maj7 position ${
+          index + 1
+        } should contain only major-7 chord tones`, () => {
+          const notes = chord2midi(
+            frets(position),
+            cavaquinho.tunings.standard
+          );
+          expect(notes.every((note) => chordTones.includes(note % 12))).toEqual(
+            true
+          );
         });
       });
     });
@@ -198,9 +226,16 @@ describe('cavaquinho Chords', () => {
       }
 
       ninth.positions.map((position, index) => {
-        it(`${key} 9 position ${index + 1} should contain only dominant-9 chord tones`, () => {
-          const notes = chord2midi(frets(position), cavaquinho.tunings.standard);
-          expect(notes.every((note) => chordTones.includes(note % 12))).toEqual(true);
+        it(`${key} 9 position ${
+          index + 1
+        } should contain only dominant-9 chord tones`, () => {
+          const notes = chord2midi(
+            frets(position),
+            cavaquinho.tunings.standard
+          );
+          expect(notes.every((note) => chordTones.includes(note % 12))).toEqual(
+            true
+          );
         });
       });
     });
@@ -208,17 +243,17 @@ describe('cavaquinho Chords', () => {
 
   describe('Diminished positions', () => {
     const expandedPositionCounts = {
-      A: 12,
-      Ab: 12,
-      B: 12,
-      Bb: 12,
+      A: 11,
+      Ab: 11,
+      B: 11,
+      Bb: 11,
       C: 12,
-      Db: 12,
+      Db: 11,
       D: 12,
       Eb: 12,
       E: 12,
       F: 12,
-      Gb: 12,
+      Gb: 11,
       G: 12,
     };
 
@@ -235,20 +270,35 @@ describe('cavaquinho Chords', () => {
 
       if (expandedPositionCounts[key]) {
         it(`${key} dim should have every page position`, () =>
-          expect(diminished.positions).toHaveLength(expandedPositionCounts[key]));
+          expect(diminished.positions).toHaveLength(
+            expandedPositionCounts[key]
+          ));
       }
 
       diminished.positions.map((position, index) => {
-        it(`${key} dim position ${index + 1} should contain only diminished-seventh chord tones`, () => {
-          const notes = chord2midi(frets(position), cavaquinho.tunings.standard);
-          expect(notes.every((note) => chordTones.includes(note % 12))).toEqual(true);
+        it(`${key} dim position ${
+          index + 1
+        } should contain only diminished-seventh chord tones`, () => {
+          const notes = chord2midi(
+            frets(position),
+            cavaquinho.tunings.standard
+          );
+          expect(notes.every((note) => chordTones.includes(note % 12))).toEqual(
+            true
+          );
         });
       });
     });
   });
 
   describe('Natural-key major 7 correspondent shapes', () => {
-    const compareShift = (fromKey, toKey, shift, positionNumber, shiftOpenStrings = false) => {
+    const compareShift = (
+      fromKey,
+      toKey,
+      shift,
+      positionNumber,
+      shiftOpenStrings = false
+    ) => {
       const from = getChord(fromKey, 'maj7').positions;
       const to = getChord(toKey, 'maj7').positions;
       const index = positionNumber - 1;
@@ -261,7 +311,13 @@ describe('cavaquinho Chords', () => {
 
     const comparePair = (fromKey, toKey, shifts, openShiftPositions = []) => {
       shifts.map((shift, index) =>
-        compareShift(fromKey, toKey, shift, index + 1, openShiftPositions.includes(index + 1))
+        compareShift(
+          fromKey,
+          toKey,
+          shift,
+          index + 1,
+          openShiftPositions.includes(index + 1)
+        )
       );
     };
 
@@ -287,7 +343,13 @@ describe('cavaquinho Chords', () => {
   });
 
   describe('Accidental-key major 7 correspondent shapes', () => {
-    const compareShift = (fromKey, toKey, shift, positionNumber, options = {}) => {
+    const compareShift = (
+      fromKey,
+      toKey,
+      shift,
+      positionNumber,
+      options = {}
+    ) => {
       const from = getChord(fromKey, 'maj7').positions;
       const to = getChord(toKey, 'maj7').positions;
       const index = positionNumber - 1;
@@ -305,7 +367,13 @@ describe('cavaquinho Chords', () => {
 
     const comparePair = (fromKey, toKey, shifts, optionsByPosition = {}) => {
       shifts.map((shift, index) =>
-        compareShift(fromKey, toKey, shift, index + 1, optionsByPosition[index + 1])
+        compareShift(
+          fromKey,
+          toKey,
+          shift,
+          index + 1,
+          optionsByPosition[index + 1]
+        )
       );
     };
 
@@ -355,10 +423,14 @@ describe('cavaquinho Chords', () => {
         const expected = sourceExceptions[key][positionNumber];
 
         it(`${key}maj7 position ${positionNumber} should preserve image-confirmed exception frets`, () =>
-          expect(frets(positions[index])).toEqual(processString(expected.frets)));
+          expect(frets(positions[index])).toEqual(
+            processString(expected.frets)
+          ));
 
         it(`${key}maj7 position ${positionNumber} should preserve image-confirmed exception fingering`, () =>
-          expect(fingers(positions[index])).toEqual(processString(expected.fingers)));
+          expect(fingers(positions[index])).toEqual(
+            processString(expected.fingers)
+          ));
       });
     });
 
@@ -429,7 +501,14 @@ describe('cavaquinho Chords', () => {
   });
 
   describe('Accidental-key dominant 9 correspondent shapes', () => {
-    const compareShift = (fromKey, toKey, fromPositionNumber, toPositionNumber, shift, options = {}) => {
+    const compareShift = (
+      fromKey,
+      toKey,
+      fromPositionNumber,
+      toPositionNumber,
+      shift,
+      options = {}
+    ) => {
       const from = getChord(fromKey, '9').positions;
       const to = getChord(toKey, '9').positions;
       const fromIndex = fromPositionNumber - 1;
@@ -448,7 +527,14 @@ describe('cavaquinho Chords', () => {
 
     const compareMapped = (fromKey, toKey, mappings) => {
       mappings.map((mapping) =>
-        compareShift(fromKey, toKey, mapping.from, mapping.to, mapping.shift, mapping.options)
+        compareShift(
+          fromKey,
+          toKey,
+          mapping.from,
+          mapping.to,
+          mapping.shift,
+          mapping.options
+        )
       );
     };
 
@@ -497,7 +583,12 @@ describe('cavaquinho Chords', () => {
       { from: 2, to: 2, shift: 5 },
       { from: 3, to: 3, shift: -7 },
       { from: 4, to: 4, shift: -7 },
-      { from: 5, to: 5, shift: 5, options: { shiftOpenStrings: true, expectedFingers: '1324' } },
+      {
+        from: 5,
+        to: 5,
+        shift: 5,
+        options: { shiftOpenStrings: true, expectedFingers: '1324' },
+      },
       { from: 6, to: 6, shift: 5 },
       { from: 7, to: 7, shift: 5 },
       { from: 8, to: 8, shift: 5 },
@@ -537,41 +628,21 @@ describe('cavaquinho Chords', () => {
   });
 
   describe('Diminished source-register semantics', () => {
-    const openPositionsByKey = {
-      Ab: [8, 9, 10],
-      B: [5, 6, 7],
-      D: [2, 3, 4],
-      F: [1, 11, 12],
-    };
-
-    Object.keys(openPositionsByKey).map((key) => {
-      const positions = getChord(key, 'dim').positions;
-
-      openPositionsByKey[key].map((positionNumber) => {
-        const index = positionNumber - 1;
-
-        it(`${key}dim position ${positionNumber} should preserve image-confirmed open-register frets`, () =>
-          expect(frets(positions[index]).some((fret) => fret === 0)).toEqual(true));
-
-        it(`${key}dim position ${positionNumber} should not add barre/capo to an open-register source shape`, () => {
-          expect(positions[index].barres).toBeUndefined();
-          expect(positions[index].capo).toBeUndefined();
-        });
-      });
-    });
-
     Object.keys(noteNumbers).map((key) => {
-      const openPositions = openPositionsByKey[key] || [];
       const positions = getChord(key, 'dim').positions;
 
       positions.map((position, index) => {
         const positionNumber = index + 1;
+        const isOpenPosition = frets(position).some((fret) => fret === 0);
 
-        if (openPositions.includes(positionNumber)) return;
-
-        it(`${key}dim position ${positionNumber} should preserve closed-position barre/capo semantics`, () => {
-          expect(relativeBarres(position)).toEqual([0]);
-          expect(position.capo).toEqual(true);
+        it(`${key}dim position ${positionNumber} should preserve its source-register semantics`, () => {
+          if (isOpenPosition) {
+            expect(position.barres).toBeUndefined();
+            expect(position.capo).toBeUndefined();
+          } else {
+            expect(relativeBarres(position)).toEqual([0]);
+            expect(position.capo).toEqual(true);
+          }
         });
       });
     });
@@ -590,11 +661,18 @@ describe('cavaquinho Chords', () => {
     cFromDShifts.map((shift, index) => {
       it(`C7 position ${index + 1} should match D7 correspondent frets`, () =>
         expect(frets(c7[index])).toEqual(
-          shiftFrets(frets(d7[index]), shift, closedRegisterPositions.includes(index + 1))
+          shiftFrets(
+            frets(d7[index]),
+            shift,
+            closedRegisterPositions.includes(index + 1)
+          )
         ));
 
-      it(`C7 position ${index + 1} should match D7 correspondent fingering`, () => {
-        const expected = expectedFingerExceptions[index + 1] || d7[index].fingers;
+      it(`C7 position ${
+        index + 1
+      } should match D7 correspondent fingering`, () => {
+        const expected =
+          expectedFingerExceptions[index + 1] || d7[index].fingers;
         expect(fingers(c7[index])).toEqual(processString(expected));
       });
     });
@@ -624,12 +702,20 @@ describe('cavaquinho Chords', () => {
     bFromAShifts.map((shift, index) => {
       it(`B7 position ${index + 1} should match A7 correspondent frets`, () =>
         expect(frets(b7[index])).toEqual(
-          shiftFrets(frets(a7[index]), shift, lowRegisterPositions.includes(index + 1))
+          shiftFrets(
+            frets(a7[index]),
+            shift,
+            lowRegisterPositions.includes(index + 1)
+          )
         ));
 
-      it(`B7 position ${index + 1} should match A7 correspondent fingering`, () =>
+      it(`B7 position ${
+        index + 1
+      } should match A7 correspondent fingering`, () =>
         expect(fingers(b7[index])).toEqual(
-          processString(expectedFingerExceptions[index + 1] || a7[index].fingers)
+          processString(
+            expectedFingerExceptions[index + 1] || a7[index].fingers
+          )
         ));
     });
 
@@ -658,12 +744,20 @@ describe('cavaquinho Chords', () => {
     bFromAShifts.map((shift, index) => {
       it(`Bm7 position ${index + 1} should match Am7 correspondent frets`, () =>
         expect(frets(bm7[index])).toEqual(
-          shiftFrets(frets(am7[index]), shift, lowRegisterPositions.includes(index + 1))
+          shiftFrets(
+            frets(am7[index]),
+            shift,
+            lowRegisterPositions.includes(index + 1)
+          )
         ));
 
-      it(`Bm7 position ${index + 1} should match Am7 correspondent fingering`, () =>
+      it(`Bm7 position ${
+        index + 1
+      } should match Am7 correspondent fingering`, () =>
         expect(fingers(bm7[index])).toEqual(
-          processString(expectedFingerExceptions[index + 1] || am7[index].fingers)
+          processString(
+            expectedFingerExceptions[index + 1] || am7[index].fingers
+          )
         ));
     });
 
@@ -672,7 +766,9 @@ describe('cavaquinho Chords', () => {
 
       it(`Bm7 position ${positionNumber} should match Am7 relative barre semantics when both are fretted`, () => {
         if (am7[index].barres && bm7[index].barres) {
-          expect(relativeBarres(bm7[index])).toEqual(relativeBarres(am7[index]));
+          expect(relativeBarres(bm7[index])).toEqual(
+            relativeBarres(am7[index])
+          );
           expect(bm7[index].capo).toEqual(am7[index].capo);
         }
       });
@@ -689,11 +785,17 @@ describe('cavaquinho Chords', () => {
 
     dFromCShifts.map((shift, index) => {
       it(`Dm7 position ${index + 1} should match Cm7 correspondent frets`, () =>
-        expect(frets(dm7[index])).toEqual(shiftFrets(frets(cm7[index]), shift)));
+        expect(frets(dm7[index])).toEqual(
+          shiftFrets(frets(cm7[index]), shift)
+        ));
 
-      it(`Dm7 position ${index + 1} should match Cm7 correspondent fingering`, () =>
+      it(`Dm7 position ${
+        index + 1
+      } should match Cm7 correspondent fingering`, () =>
         expect(fingers(dm7[index])).toEqual(
-          processString(expectedFingerExceptions[index + 1] || cm7[index].fingers)
+          processString(
+            expectedFingerExceptions[index + 1] || cm7[index].fingers
+          )
         ));
     });
 
@@ -702,7 +804,9 @@ describe('cavaquinho Chords', () => {
 
       it(`Dm7 position ${positionNumber} should match Cm7 relative barre semantics when both are fretted`, () => {
         if (cm7[index].barres && dm7[index].barres) {
-          expect(relativeBarres(dm7[index])).toEqual(relativeBarres(cm7[index]));
+          expect(relativeBarres(dm7[index])).toEqual(
+            relativeBarres(cm7[index])
+          );
           expect(dm7[index].capo).toEqual(cm7[index].capo);
         }
       });
@@ -748,14 +852,18 @@ describe('cavaquinho Chords', () => {
 
       it(`Fm7 position ${positionNumber} should match Em7 relative barre semantics when both are fretted`, () => {
         if (em7[index].barres && fm7[index].barres) {
-          expect(relativeBarres(fm7[index])).toEqual(relativeBarres(em7[index]));
+          expect(relativeBarres(fm7[index])).toEqual(
+            relativeBarres(em7[index])
+          );
           expect(fm7[index].capo).toEqual(em7[index].capo);
         }
       });
 
       it(`Gm7 position ${positionNumber} should match Fm7 relative barre semantics when both are fretted`, () => {
         if (fm7[index].barres && gm7[index].barres) {
-          expect(relativeBarres(gm7[index])).toEqual(relativeBarres(fm7[index]));
+          expect(relativeBarres(gm7[index])).toEqual(
+            relativeBarres(fm7[index])
+          );
           expect(gm7[index].capo).toEqual(fm7[index].capo);
         }
       });

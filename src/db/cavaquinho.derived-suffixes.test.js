@@ -34,6 +34,17 @@ describe('cavaquinho derived suffixes', () => {
     });
   });
 
+  it('does not publish duplicate physical positions for a chord', () => {
+    Object.values(cavaquinho.chords).forEach((chords) => {
+      chords.forEach((chord) => {
+        const identities = chord.positions.map((position) =>
+          [position.baseFret || 1, ...position.frets].join(':')
+        );
+        expect(new Set(identities).size).toEqual(identities.length);
+      });
+    });
+  });
+
   it.each(['aug', 'm9', 'maj9', 'madd9'])(
     'does not invent %s shapes when the source corpus has no compatible voicing',
     (suffix) => {
