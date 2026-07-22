@@ -11,6 +11,7 @@ import A from './A/index';
 import Bb from './Bb/index';
 import B from './B/index';
 import { applyHistoricalVoicings } from '../historicalVoicings';
+import { deriveSuffixVoicings } from '../deriveSuffixVoicings';
 
 const chords = {
   C,
@@ -27,4 +28,4 @@ const chords = {
   B,
 };
 
-export default applyHistoricalVoicings(chords);
+export default deriveSuffixVoicings(applyHistoricalVoicings(chords));
