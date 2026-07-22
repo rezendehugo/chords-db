@@ -10,5 +10,7 @@ export default [
   'sus4',
   'sus2',
   '6',
+  'm6',
   '9',
+  'add9',
 ];
