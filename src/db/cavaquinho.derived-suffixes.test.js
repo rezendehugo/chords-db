@@ -45,6 +45,18 @@ describe('cavaquinho derived suffixes', () => {
     });
   });
 
+  it('expands every suspended-second chord from equivalent source shapes', () => {
+    Object.keys(cavaquinho.chords).forEach((key) => {
+      expect(getChord(key, 'sus2').positions.length).toBeGreaterThanOrEqual(6);
+    });
+  });
+
+  it('raises every minor-seventh chord above the shallow-coverage threshold', () => {
+    Object.keys(cavaquinho.chords).forEach((key) => {
+      expect(getChord(key, 'm7').positions.length).toBeGreaterThanOrEqual(9);
+    });
+  });
+
   it.each(['aug', 'm9', 'maj9', 'madd9'])(
     'does not invent %s shapes when the source corpus has no compatible voicing',
     (suffix) => {

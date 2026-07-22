@@ -99,13 +99,13 @@ describe('cavaquinho Chords', () => {
 
   describe('Minor 7 positions', () => {
     const expandedPositionCounts = {
-      A: 11,
-      B: 11,
-      C: 11,
-      D: 11,
-      E: 11,
-      F: 11,
-      G: 11,
+      A: 12,
+      B: 12,
+      C: 13,
+      D: 12,
+      E: 12,
+      F: 12,
+      G: 12,
     };
 
     Object.keys(cavaquinho.chords).map((key) => {

@@ -11,6 +11,8 @@ const derivedSuffixes = [
   'madd9',
 ];
 
+const expandedSuffixes = [...derivedSuffixes, 'm7', 'sus2'];
+
 const positionIdentity = (position) => fretValues(position).join(':');
 
 const clonePosition = (position) => ({
@@ -33,12 +35,13 @@ const matchingPositions = (positions, key, suffix) => [
 ];
 
 const uniquePositions = (positions) => [
-  ...new Map(
-    positions.map((position) => [
-      positionIdentity(position),
-      clonePosition(position),
-    ])
-  ).values(),
+  ...positions
+    .reduce((result, position) => {
+      const identity = positionIdentity(position);
+      if (!result.has(identity)) result.set(identity, clonePosition(position));
+      return result;
+    }, new Map())
+    .values(),
 ];
 
 export function deriveSuffixVoicings(chordsByKey) {
@@ -47,21 +50,28 @@ export function deriveSuffixVoicings(chordsByKey) {
   );
 
   return Object.fromEntries(
-    Object.entries(chordsByKey).map(([key, chords]) => [
-      key,
-      chords
-        .map((chord) => ({
-          ...chord,
-          positions: uniquePositions(chord.positions),
-        }))
-        .concat(
-          derivedSuffixes.map((suffix) => ({
-            key,
-            suffix,
-            positions: matchingPositions(sourcePositions, key, suffix),
-          }))
+    Object.entries(chordsByKey).map(([key, chords]) => {
+      const existingSuffixes = new Set(chords.map((chord) => chord.suffix));
+      const expandedChords = chords.map((chord) => ({
+        ...chord,
+        positions: uniquePositions(
+          chord.positions.concat(
+            expandedSuffixes.includes(chord.suffix)
+              ? matchingPositions(sourcePositions, key, chord.suffix)
+              : []
+          )
         ),
-    ])
+      }));
+      const newChords = derivedSuffixes
+        .filter((suffix) => !existingSuffixes.has(suffix))
+        .map((suffix) => ({
+          key,
+          suffix,
+          positions: matchingPositions(sourcePositions, key, suffix),
+        }));
+
+      return [key, expandedChords.concat(newChords)];
+    })
   );
 }
 
