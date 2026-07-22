@@ -32,6 +32,15 @@ const matchingPositions = (positions, key, suffix) => [
   ).values(),
 ];
 
+const uniquePositions = (positions) => [
+  ...new Map(
+    positions.map((position) => [
+      positionIdentity(position),
+      clonePosition(position),
+    ])
+  ).values(),
+];
+
 export function deriveSuffixVoicings(chordsByKey) {
   const sourcePositions = Object.values(chordsByKey).flatMap((chords) =>
     chords.flatMap((chord) => chord.positions)
@@ -40,13 +49,18 @@ export function deriveSuffixVoicings(chordsByKey) {
   return Object.fromEntries(
     Object.entries(chordsByKey).map(([key, chords]) => [
       key,
-      chords.concat(
-        derivedSuffixes.map((suffix) => ({
-          key,
-          suffix,
-          positions: matchingPositions(sourcePositions, key, suffix),
+      chords
+        .map((chord) => ({
+          ...chord,
+          positions: uniquePositions(chord.positions),
         }))
-      ),
+        .concat(
+          derivedSuffixes.map((suffix) => ({
+            key,
+            suffix,
+            positions: matchingPositions(sourcePositions, key, suffix),
+          }))
+        ),
     ])
   );
 }

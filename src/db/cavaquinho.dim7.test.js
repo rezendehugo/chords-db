@@ -11,7 +11,7 @@ import {
   positionSnapshot,
 } from './cavaquinho.test-helpers';
 
-const sourcePositions = {
+const rawSourcePositions = {
   C: [
     { frets: 'a877', fingers: '4211', barres: 7, capo: true },
     { frets: 'abaa', fingers: '1211', barres: 10, capo: true },
@@ -182,12 +182,16 @@ const sourcePositions = {
   ],
 };
 
-const openPositionsByKey = {
-  Ab: [8, 9, 10],
-  B: [5, 6, 7],
-  D: [2, 3, 4],
-  F: [1, 11, 12],
-};
+const sourcePositions = Object.fromEntries(
+  Object.entries(rawSourcePositions).map(([key, positions]) => [
+    key,
+    [
+      ...new Map(
+        positions.map((position) => [JSON.stringify(position), position])
+      ).values(),
+    ],
+  ])
+);
 
 describe('cavaquinho dim7 source golden', () => {
   Object.keys(sourcePositions).map((key) => {
@@ -213,9 +217,7 @@ describe('cavaquinho dim7 source golden', () => {
 
     chord.positions.map((position, index) => {
       const positionNumber = index + 1;
-      const openPositions = openPositionsByKey[key] || [];
-
-      if (openPositions.includes(positionNumber)) {
+      if (frets(position).some((fret) => fret === 0)) {
         it(`${key}dim7 position ${positionNumber} should preserve source open-register semantics`, () => {
           expect(frets(position).some((fret) => fret === 0)).toEqual(true);
           expect(position.barres).toBeUndefined();
