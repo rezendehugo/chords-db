@@ -10,8 +10,9 @@ import Ab from './Ab/index';
 import A from './A/index';
 import Bb from './Bb/index';
 import B from './B/index';
+import { applyHistoricalVoicings } from '../historicalVoicings';
 
-export default {
+const chords = {
   C,
   Db,
   D,
@@ -25,3 +26,5 @@ export default {
   Bb,
   B,
 };
+
+export default applyHistoricalVoicings(chords);
