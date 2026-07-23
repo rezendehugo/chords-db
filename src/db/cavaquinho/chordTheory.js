@@ -58,8 +58,8 @@ export const chordDefinitions = {
   add9: { intervals: [0, 2, 4, 7], essential: [0, 2, 4] },
   aug: { intervals: [0, 4, 8], essential: [0, 4, 8] },
   69: { intervals: [0, 2, 4, 7, 9], essential: [0, 4, 9] },
-  m9: { intervals: [0, 2, 3, 7, 10], essential: [0, 2, 3, 10] },
-  maj9: { intervals: [0, 2, 4, 7, 11], essential: [0, 2, 4, 11] },
+  m9: { intervals: [0, 2, 3, 7, 10], essential: [2, 3, 10] },
+  maj9: { intervals: [0, 2, 4, 7, 11], essential: [2, 4, 11] },
   madd9: { intervals: [0, 2, 3, 7], essential: [0, 2, 3] },
 };
 
@@ -97,6 +97,7 @@ export function classifyVoicing(position, key, suffix) {
   const omissions = expected.filter((note) => !played.includes(note));
   const additions = played.filter((note) => !expected.includes(note));
   const missingEssential = essential.filter((note) => !played.includes(note));
+  const root = noteNumbers[key];
 
   let classification = 'complete';
   if (additions.length > 0) classification = 'additional';
@@ -111,6 +112,8 @@ export function classifyVoicing(position, key, suffix) {
     omissions,
     additions,
     missingEssential,
+    essential,
+    rootMissing: !played.includes(root),
   };
 }
 

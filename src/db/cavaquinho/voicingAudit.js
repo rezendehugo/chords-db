@@ -67,6 +67,13 @@ function auditPosition(key, suffix, position, index) {
     additions: analysis
       ? analysis.additions.map((note) => pitchClassNames[note])
       : [],
+    essentialTones: analysis
+      ? analysis.essential.map((note) => pitchClassNames[note])
+      : [],
+    missingEssential: analysis
+      ? analysis.missingEssential.map((note) => pitchClassNames[note])
+      : [],
+    rootMissing: analysis ? analysis.rootMissing : false,
     duplications: countDuplicates(midi),
     possibleEquivalences: findEquivalences(position).filter(
       (equivalence) => equivalence !== `${key}:${suffix}`
