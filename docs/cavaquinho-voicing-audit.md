@@ -7,7 +7,8 @@ adicionais, duplicações e possíveis equivalências.
 ## Política
 
 - `complete`: contém todas as notas da fórmula e nenhuma nota externa.
-- `incomplete`: não contém notas externas e preserva raiz e tons essenciais.
+- `incomplete`: não contém notas externas e preserva os tons essenciais; a
+  omissão da raiz só é aceita pelas políticas explícitas de extensão.
 - `additional`: contém ao menos uma nota fora da fórmula e não pode alimentar
   aliases automáticos.
 - `invalid`: não contém notas externas, mas omite um tom essencial.
@@ -52,6 +53,12 @@ notas externas.
 
 - `sus2`: todas as raízes passam a oferecer entre 6 e 7 shapes.
 - `m7`: todas as raízes passam a oferecer entre 9 e 13 shapes.
-- `7`: Db, Eb, Gb, Ab e Bb continuam com apenas 2 shapes porque o corpus não
-  contém outra posição compatível. Nenhum shape é renomeado para preencher essa
-  lacuna artificialmente.
+- `7`: Db, Eb, Gb, Ab e Bb passam a oferecer respectivamente 11, 9, 10, 9 e 10
+  shapes publicados, dos quais 10, 8, 10, 9 e 10 são reutilizáveis.
+
+Os dominantes acidentais são derivados por transposição cromática de um
+semitom dos shapes equivalentes de C, D, F, G e A. Somente posições inteiramente
+pressionadas são usadas: cordas soltas não são deslocadas, portanto a digitação
+e as pestanas originais continuam válidas. Cada resultado é revalidado contra
+raiz, terça maior e sétima menor, rejeita notas externas e é deduplicado pela
+posição física.

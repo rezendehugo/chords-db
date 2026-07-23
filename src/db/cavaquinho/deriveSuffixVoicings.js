@@ -18,6 +18,14 @@ const derivedSuffixes = [
 
 const expandedSuffixes = [...derivedSuffixes, 'm7', 'sus2'];
 
+const dominantTransposeSources = {
+  Db: 'C',
+  Eb: 'D',
+  Gb: 'F',
+  Ab: 'G',
+  Bb: 'A',
+};
+
 const positionIdentity = (position) => fretValues(position).join(':');
 
 const clonePosition = (position) => ({
@@ -30,6 +38,27 @@ const clonePosition = (position) => ({
     ? [...position.barres]
     : position.barres,
 });
+
+export function transposeFullyFrettedPosition(position, semitones = 1) {
+  const frets = fretValues(position);
+  if (frets.some((fret) => fret === 0)) return null;
+  return {
+    ...clonePosition(position),
+    frets: frets.map((fret) => (fret < 0 ? fret : fret + semitones)),
+  };
+}
+
+function getTransposedDominantPositions(chordsByKey, targetKey) {
+  const sourceKey = dominantTransposeSources[targetKey];
+  if (!sourceKey) return [];
+  const sourceChord = chordsByKey[sourceKey].find(
+    (chord) => chord.suffix === '7'
+  );
+  return sourceChord.positions
+    .map((position) => transposeFullyFrettedPosition(position))
+    .filter(Boolean)
+    .filter((position) => isReusableVoicing(position, targetKey, '7'));
+}
 
 export function compareVoicingCandidates(left, right) {
   return (
@@ -82,6 +111,9 @@ export function deriveSuffixVoicings(chordsByKey) {
           chord.positions.concat(
             expandedSuffixes.includes(chord.suffix)
               ? matchingPositions(sourcePositions, key, chord.suffix)
+              : [],
+            chord.suffix === '7'
+              ? getTransposedDominantPositions(chordsByKey, key)
               : []
           )
         ),

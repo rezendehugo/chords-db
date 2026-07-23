@@ -3,7 +3,10 @@
 import cavaquinho from './cavaquinho';
 import suffixes from './cavaquinho/suffixes';
 import { classifyVoicing } from './cavaquinho/chordTheory';
-import { compareVoicingCandidates } from './cavaquinho/deriveSuffixVoicings';
+import {
+  compareVoicingCandidates,
+  transposeFullyFrettedPosition,
+} from './cavaquinho/deriveSuffixVoicings';
 
 const getChord = (key, suffix) =>
   cavaquinho.chords[key].find((chord) => chord.suffix === suffix);
@@ -57,6 +60,29 @@ describe('cavaquinho derived suffixes', () => {
     Object.keys(cavaquinho.chords).forEach((key) => {
       expect(getChord(key, 'm7').positions.length).toBeGreaterThanOrEqual(9);
     });
+  });
+
+  it('raises every dominant-seventh chord above the shallow-coverage threshold', () => {
+    Object.keys(cavaquinho.chords).forEach((key) => {
+      const positions = getChord(key, '7').positions;
+      const validatedPositions = positions.filter((position) => {
+        const analysis = classifyVoicing(position, key, '7');
+        return analysis.additions.length === 0 && analysis.missingEssential.length === 0;
+      });
+      expect(validatedPositions.length).toBeGreaterThanOrEqual(3);
+    });
+  });
+
+  it('transposes only fully fretted positions and preserves their fingering', () => {
+    expect(
+      transposeFullyFrettedPosition({
+        frets: '2312',
+        fingers: '2413',
+      })
+    ).toMatchObject({ frets: [3, 4, 2, 3], fingers: '2413' });
+    expect(
+      transposeFullyFrettedPosition({ frets: '0214', fingers: '0123' })
+    ).toBeNull();
   });
 
   it.each([
