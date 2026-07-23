@@ -23,13 +23,25 @@ Ele nunca é reutilizado automaticamente.
 | `7sus4`         | `7(4)`    |                           12/12 | Já existente e validado                     |
 | `69`            | `6/9`     |                           12/12 | Derivado conforme tons essenciais aprovados |
 | `aug`           | `+`       |                            0/12 | Aguarda shapes com fonte conhecida          |
-| `m9`            | `m9`      |                            0/12 | Aguarda shapes com fonte conhecida          |
-| `maj9`          | `7M(9)`   |                            0/12 | Aguarda shapes com fonte conhecida          |
+| `m9`            | `m9`      |                           12/12 | 8 voicings sem raiz por tom                 |
+| `maj9`          | `7M(9)`   |                           12/12 | 10–11 voicings sem raiz por tom             |
 | `madd9`         | `m(add9)` |                            0/12 | Aguarda shapes com fonte conhecida          |
 
 Entradas sem cobertura permanecem definidas no domínio e no metadata, mas não
 recebem digitações inventadas. Uma fonte verificável deve ser adicionada antes
 de publicar shapes para esses acordes.
+
+### Voicings sem raiz
+
+Extensões de nona podem omitir raiz e quinta quando preservam seus tons
+característicos e não contêm notas externas:
+
+- `m9` exige terça menor, sétima menor e nona.
+- `maj9` exige terça maior, sétima maior e nona.
+
+O relatório marca `rootMissing` e lista os tons essenciais de cada shape. A
+ordenação prefere raiz presente, depois menos omissões e por fim a ordem estável
+da fonte. Esses voicings devem ser apresentados como opções de acompanhamento.
 
 ## Expansão de cobertura rasa
 

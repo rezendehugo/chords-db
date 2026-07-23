@@ -1,4 +1,9 @@
-import { chordDefinitions, fretValues, isReusableVoicing } from './chordTheory';
+import {
+  chordDefinitions,
+  classifyVoicing,
+  fretValues,
+  isReusableVoicing,
+} from './chordTheory';
 
 const derivedSuffixes = [
   'm6',
@@ -26,13 +31,32 @@ const clonePosition = (position) => ({
     : position.barres,
 });
 
-const matchingPositions = (positions, key, suffix) => [
-  ...new Map(
-    positions
-      .filter((position) => isReusableVoicing(position, key, suffix))
-      .map((position) => [positionIdentity(position), clonePosition(position)])
-  ).values(),
-];
+export function compareVoicingCandidates(left, right) {
+  return (
+    Number(left.analysis.rootMissing) - Number(right.analysis.rootMissing) ||
+    left.analysis.omissions.length - right.analysis.omissions.length ||
+    left.sourceIndex - right.sourceIndex
+  );
+}
+
+const matchingPositions = (positions, key, suffix) =>
+  [
+    ...positions
+      .map((position, sourceIndex) => ({ position, sourceIndex }))
+      .filter(({ position }) => isReusableVoicing(position, key, suffix))
+      .reduce((result, entry) => {
+        const identity = positionIdentity(entry.position);
+        if (!result.has(identity)) result.set(identity, entry);
+        return result;
+      }, new Map())
+      .values(),
+  ]
+    .map((entry) => ({
+      ...entry,
+      analysis: classifyVoicing(entry.position, key, suffix),
+    }))
+    .sort(compareVoicingCandidates)
+    .map(({ position }) => clonePosition(position));
 
 const uniquePositions = (positions) => [
   ...positions

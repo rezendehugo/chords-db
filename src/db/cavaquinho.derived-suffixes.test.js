@@ -2,6 +2,8 @@
 
 import cavaquinho from './cavaquinho';
 import suffixes from './cavaquinho/suffixes';
+import { classifyVoicing } from './cavaquinho/chordTheory';
+import { compareVoicingCandidates } from './cavaquinho/deriveSuffixVoicings';
 
 const getChord = (key, suffix) =>
   cavaquinho.chords[key].find((chord) => chord.suffix === suffix);
@@ -57,7 +59,57 @@ describe('cavaquinho derived suffixes', () => {
     });
   });
 
-  it.each(['aug', 'm9', 'maj9', 'madd9'])(
+  it.each([
+    ['m9', 8, 8],
+    ['maj9', 10, 11],
+  ])(
+    'publishes rootless %s voicings in every key',
+    (suffix, minimum, maximum) => {
+      Object.keys(cavaquinho.chords).forEach((key) => {
+        const positions = getChord(key, suffix).positions;
+        expect(positions.length).toBeGreaterThanOrEqual(minimum);
+        expect(positions.length).toBeLessThanOrEqual(maximum);
+        positions.forEach((position) => {
+          const analysis = classifyVoicing(position, key, suffix);
+          expect(analysis.classification).toEqual('incomplete');
+          expect(analysis.rootMissing).toEqual(true);
+          expect(analysis.additions).toEqual([]);
+          expect(analysis.missingEssential).toEqual([]);
+        });
+      });
+    }
+  );
+
+  it('orders rooted shapes before fewer omissions and preserves source order', () => {
+    const candidates = [
+      {
+        id: 'later',
+        analysis: { rootMissing: true, omissions: ['C'] },
+        sourceIndex: 2,
+      },
+      {
+        id: 'fewer',
+        analysis: { rootMissing: true, omissions: [] },
+        sourceIndex: 1,
+      },
+      {
+        id: 'rooted',
+        analysis: { rootMissing: false, omissions: ['G', 'C'] },
+        sourceIndex: 3,
+      },
+      {
+        id: 'earlier',
+        analysis: { rootMissing: true, omissions: ['C'] },
+        sourceIndex: 0,
+      },
+    ];
+
+    expect(
+      candidates.sort(compareVoicingCandidates).map(({ id }) => id)
+    ).toEqual(['rooted', 'fewer', 'earlier', 'later']);
+  });
+
+  it.each(['aug', 'madd9'])(
     'does not invent %s shapes when the source corpus has no compatible voicing',
     (suffix) => {
       Object.keys(cavaquinho.chords).forEach((key) => {
