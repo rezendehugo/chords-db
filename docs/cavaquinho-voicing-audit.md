@@ -23,6 +23,7 @@ Ele nunca é reutilizado automaticamente.
 | `7sus4`         | `7(4)`    |                           12/12 | Já existente e validado                     |
 | `69`            | `6/9`     |                           12/12 | Derivado conforme tons essenciais aprovados |
 | `aug`           | `+`       |                            0/12 | Aguarda shapes com fonte conhecida          |
+| `9`             | `7(9)`    |                           12/12 | 8 voicings sem raiz por tom                 |
 | `m9`            | `m9`      |                           12/12 | 8 voicings sem raiz por tom                 |
 | `maj9`          | `7M(9)`   |                           12/12 | 10–11 voicings sem raiz por tom             |
 | `madd9`         | `m(add9)` |                            0/12 | Aguarda shapes com fonte conhecida          |
@@ -38,10 +39,14 @@ característicos e não contêm notas externas:
 
 - `m9` exige terça menor, sétima menor e nona.
 - `maj9` exige terça maior, sétima maior e nona.
+- `9` exige terça maior, sétima menor e nona. Os antigos shapes sem sétima
+  dominante permanecem disponíveis somente como `add9`.
 
 O relatório marca `rootMissing` e lista os tons essenciais de cada shape. A
 ordenação prefere raiz presente, depois menos omissões e por fim a ordem estável
-da fonte. Esses voicings devem ser apresentados como opções de acompanhamento.
+da região do braço e da fonte. `possibleEquivalences` registra os acordes de
+origem compatíveis com a mesma posição física. Esses voicings devem ser
+apresentados como opções de acompanhamento.
 
 ## Expansão de cobertura rasa
 

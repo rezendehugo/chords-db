@@ -18,12 +18,17 @@ const roots = {
 const candidates = {
   aug: { intervals: [0, 4, 8], required: [0, 4, 8], example: 'G+' },
   5: { intervals: [0, 7], required: [0, 7], example: 'G5' },
+  9: {
+    intervals: [0, 2, 4, 7, 10],
+    required: [2, 4, 10],
+    example: 'G7(9)',
+  },
   maj9: {
     intervals: [0, 2, 4, 7, 11],
-    required: [0, 2, 4, 11],
+    required: [2, 4, 11],
     example: 'Gmaj9',
   },
-  m9: { intervals: [0, 2, 3, 7, 10], required: [0, 2, 3, 10], example: 'Gm9' },
+  m9: { intervals: [0, 2, 3, 7, 10], required: [2, 3, 10], example: 'Gm9' },
   '7b5': { intervals: [0, 4, 6, 10], required: [0, 4, 6, 10], example: 'G7♭5' },
   '7#5': { intervals: [0, 4, 8, 10], required: [0, 4, 8, 10], example: 'G7♯5' },
   '6/9': {
