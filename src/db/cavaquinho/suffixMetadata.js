@@ -32,7 +32,11 @@ export default {
     symbol: '7(4)',
     aliases: ['7sus4', '7sus', '7 suspenso'],
   },
-  9: { label: 'Nona dominante', symbol: '9', aliases: ['nona'] },
+  9: {
+    label: 'Sétima dominante com nona',
+    symbol: '7(9)',
+    aliases: ['9', '7(9)', 'dominante9', 'nona dominante'],
+  },
   add9: { label: 'Nona adicionada', symbol: 'add9', aliases: ['adicionada9'] },
   aug: {
     label: 'Aumentado',

@@ -52,8 +52,8 @@ export const chordDefinitions = {
   '7sus4': { intervals: [0, 5, 7, 10], essential: [0, 5, 10] },
   9: {
     intervals: [0, 2, 4, 7, 10],
-    essential: [0, 2, 4, 10],
-    sourceRequired: [2, 4],
+    essential: [2, 4, 10],
+    sourceRequired: [2, 4, 10],
   },
   add9: { intervals: [0, 2, 4, 7], essential: [0, 2, 4] },
   aug: { intervals: [0, 4, 8], essential: [0, 4, 8] },

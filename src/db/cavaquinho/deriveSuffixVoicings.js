@@ -16,7 +16,7 @@ const derivedSuffixes = [
   'madd9',
 ];
 
-const expandedSuffixes = [...derivedSuffixes, 'm7', 'sus2'];
+const expandedSuffixes = [...derivedSuffixes, '9', 'm7', 'sus2'];
 
 const dominantTransposeSources = {
   Db: 'C',
@@ -61,9 +61,17 @@ function getTransposedDominantPositions(chordsByKey, targetKey) {
 }
 
 export function compareVoicingCandidates(left, right) {
+  const leftRegion = left.position
+    ? Math.min(...fretValues(left.position).filter((fret) => fret >= 0))
+    : 0;
+  const rightRegion = right.position
+    ? Math.min(...fretValues(right.position).filter((fret) => fret >= 0))
+    : 0;
+
   return (
     Number(left.analysis.rootMissing) - Number(right.analysis.rootMissing) ||
     left.analysis.omissions.length - right.analysis.omissions.length ||
+    leftRegion - rightRegion ||
     left.sourceIndex - right.sourceIndex
   );
 }
@@ -107,16 +115,19 @@ export function deriveSuffixVoicings(chordsByKey) {
       const existingSuffixes = new Set(chords.map((chord) => chord.suffix));
       const expandedChords = chords.map((chord) => ({
         ...chord,
-        positions: uniquePositions(
-          chord.positions.concat(
-            expandedSuffixes.includes(chord.suffix)
-              ? matchingPositions(sourcePositions, key, chord.suffix)
-              : [],
-            chord.suffix === '7'
-              ? getTransposedDominantPositions(chordsByKey, key)
-              : []
-          )
-        ),
+        positions:
+          chord.suffix === '9'
+            ? matchingPositions(sourcePositions, key, chord.suffix)
+            : uniquePositions(
+                chord.positions.concat(
+                  expandedSuffixes.includes(chord.suffix)
+                    ? matchingPositions(sourcePositions, key, chord.suffix)
+                    : [],
+                  chord.suffix === '7'
+                    ? getTransposedDominantPositions(chordsByKey, key)
+                    : []
+                )
+              ),
       }));
       const newChords = derivedSuffixes
         .filter((suffix) => !existingSuffixes.has(suffix))

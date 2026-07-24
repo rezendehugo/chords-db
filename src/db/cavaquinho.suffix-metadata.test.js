@@ -26,6 +26,11 @@ describe('cavaquinho Portuguese suffix metadata', () => {
     expect(suffixMetadata.aug.symbol).toEqual('+');
     expect(suffixMetadata['7sus4'].symbol).toEqual('7(4)');
     expect(suffixMetadata['69'].symbol).toEqual('6/9');
+    expect(suffixMetadata['9']).toEqual({
+      label: 'Sétima dominante com nona',
+      symbol: '7(9)',
+      aliases: ['9', '7(9)', 'dominante9', 'nona dominante'],
+    });
     expect(suffixMetadata.maj9.symbol).toEqual('7M(9)');
     expect(suffixMetadata.madd9.symbol).toEqual('m(add9)');
   });

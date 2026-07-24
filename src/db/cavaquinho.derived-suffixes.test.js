@@ -86,6 +86,7 @@ describe('cavaquinho derived suffixes', () => {
   });
 
   it.each([
+    ['9', 8, 8],
     ['m9', 8, 8],
     ['maj9', 10, 11],
   ])(
@@ -105,6 +106,18 @@ describe('cavaquinho derived suffixes', () => {
       });
     }
   );
+
+  it('separates dominant ninth voicings from added-ninth voicings', () => {
+    Object.keys(cavaquinho.chords).forEach((key) => {
+      getChord(key, '9').positions.forEach((position) => {
+        const analysis = classifyVoicing(position, key, '9');
+        expect(analysis.rootMissing).toEqual(true);
+        expect(analysis.additions).toEqual([]);
+        expect(analysis.missingEssential).toEqual([]);
+      });
+      expect(getChord(key, 'add9').positions.length).toBeGreaterThan(0);
+    });
+  });
 
   it('orders rooted shapes before fewer omissions and preserves source order', () => {
     const candidates = [

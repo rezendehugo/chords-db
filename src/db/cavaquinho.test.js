@@ -193,21 +193,6 @@ describe('cavaquinho Chords', () => {
   });
 
   describe('Dominant 9 positions', () => {
-    const expandedPositionCounts = {
-      A: 10,
-      Ab: 10,
-      B: 10,
-      Bb: 10,
-      C: 10,
-      Db: 10,
-      D: 10,
-      Eb: 10,
-      E: 10,
-      F: 10,
-      Gb: 8,
-      G: 10,
-    };
-
     Object.keys(cavaquinho.chords).map((key) => {
       const ninth = getChord(key, '9');
       const chordTones = [
@@ -219,11 +204,8 @@ describe('cavaquinho Chords', () => {
       ];
 
       it(`${key} 9 should exist`, () => expect(ninth).toBeDefined());
-
-      if (expandedPositionCounts[key]) {
-        it(`${key} 9 should have every page position`, () =>
-          expect(ninth.positions).toHaveLength(expandedPositionCounts[key]));
-      }
+      it(`${key} 9 should have eight reviewed rootless positions`, () =>
+        expect(ninth.positions).toHaveLength(8));
 
       ninth.positions.map((position, index) => {
         it(`${key} 9 position ${
@@ -443,185 +425,6 @@ describe('cavaquinho Chords', () => {
         it(`${key}maj7 position ${positionNumber} should preserve source barre/capo semantics`, () => {
           expect(relativeBarres(positions[index])).toEqual([0]);
           expect(positions[index].capo).toEqual(true);
-        });
-      });
-    });
-  });
-
-  describe('Natural-key dominant 9 correspondent shapes', () => {
-    const compareShift = (fromKey, toKey, shifts, optionsByPosition = {}) => {
-      const from = getChord(fromKey, '9').positions;
-      const to = getChord(toKey, '9').positions;
-
-      shifts.map((shift, index) => {
-        const positionNumber = index + 1;
-        const options = optionsByPosition[positionNumber] || {};
-
-        it(`${toKey}9 position ${positionNumber} should match ${fromKey}9 frets shifted by ${shift}`, () =>
-          expect(frets(to[index])).toEqual(
-            shiftFrets(frets(from[index]), shift, options.shiftOpenStrings)
-          ));
-      });
-    };
-
-    compareShift('C', 'G', [-5, -5, 7, -5, 7, -5, -5, -5, 7, -5], {
-      3: { shiftOpenStrings: true },
-      9: { shiftOpenStrings: true },
-    });
-    compareShift('G', 'D', [7, -5, -5, -5, -5, 7, 7, 7, -5, 7], {
-      6: { shiftOpenStrings: true },
-      7: { shiftOpenStrings: true },
-      8: { shiftOpenStrings: true },
-    });
-    compareShift('D', 'A', [-5, 7, 7, 7, 7, -5, -5, -5, 7, -5], {
-      2: { shiftOpenStrings: true },
-      4: { shiftOpenStrings: true },
-    });
-    compareShift('A', 'E', [-5, -5, -5, -5, -5, 7, 7, 7, -5, -5]);
-    compareShift('E', 'B', [7, 7, 7, 7, -5, -5, -5, -5, 7, 7], {
-      1: { shiftOpenStrings: true },
-      10: { shiftOpenStrings: true },
-    });
-    compareShift('B', 'F', [-6, -6, -6, -6, 6, 6, 6, 6, -6, -6]);
-
-    ['C', 'G', 'D', 'A', 'E', 'B', 'F'].map((key) => {
-      const positions = getChord(key, '9').positions;
-
-      [6, 7, 8, 9].map((positionNumber) => {
-        const index = positionNumber - 1;
-
-        it(`${key}9 position ${positionNumber} should preserve source barre/capo semantics when barred`, () => {
-          if (positions[index].barres) {
-            expect(relativeBarres(positions[index])).toEqual([0]);
-            expect(positions[index].capo).toEqual(true);
-          }
-        });
-      });
-    });
-  });
-
-  describe('Accidental-key dominant 9 correspondent shapes', () => {
-    const compareShift = (
-      fromKey,
-      toKey,
-      fromPositionNumber,
-      toPositionNumber,
-      shift,
-      options = {}
-    ) => {
-      const from = getChord(fromKey, '9').positions;
-      const to = getChord(toKey, '9').positions;
-      const fromIndex = fromPositionNumber - 1;
-      const toIndex = toPositionNumber - 1;
-
-      it(`${toKey}9 position ${toPositionNumber} should match ${fromKey}9 position ${fromPositionNumber} frets shifted by ${shift}`, () =>
-        expect(frets(to[toIndex])).toEqual(
-          shiftFrets(frets(from[fromIndex]), shift, options.shiftOpenStrings)
-        ));
-
-      it(`${toKey}9 position ${toPositionNumber} should match ${fromKey}9 position ${fromPositionNumber} fingering`, () =>
-        expect(fingers(to[toIndex])).toEqual(
-          processString(options.expectedFingers || from[fromIndex].fingers)
-        ));
-    };
-
-    const compareMapped = (fromKey, toKey, mappings) => {
-      mappings.map((mapping) =>
-        compareShift(
-          fromKey,
-          toKey,
-          mapping.from,
-          mapping.to,
-          mapping.shift,
-          mapping.options
-        )
-      );
-    };
-
-    compareMapped('B', 'Gb', [
-      { from: 1, to: 1, shift: -5 },
-      { from: 2, to: 2, shift: -5 },
-      { from: 3, to: 3, shift: -5 },
-      { from: 4, to: 4, shift: -5 },
-      { from: 5, to: 5, shift: 7 },
-      { from: 6, to: 6, shift: 7 },
-      { from: 9, to: 7, shift: -5 },
-      { from: 10, to: 8, shift: -5 },
-    ]);
-
-    compareMapped('Gb', 'Db', [
-      { from: 1, to: 1, shift: 7 },
-      { from: 2, to: 2, shift: 7 },
-      { from: 3, to: 3, shift: 7 },
-      { from: 4, to: 4, shift: 7 },
-      { from: 5, to: 5, shift: -5 },
-      { from: 6, to: 6, shift: -5 },
-    ]);
-
-    compareMapped('B', 'Db', [
-      { from: 7, to: 7, shift: 2 },
-      { from: 8, to: 8, shift: 2 },
-      { from: 9, to: 9, shift: 2 },
-      { from: 10, to: 10, shift: 2 },
-    ]);
-
-    compareMapped('F', 'Bb', [
-      { from: 1, to: 1, shift: 5 },
-      { from: 2, to: 2, shift: 5 },
-      { from: 3, to: 3, shift: 5 },
-      { from: 4, to: 4, shift: 5 },
-      { from: 5, to: 5, shift: -7, options: { expectedFingers: '0213' } },
-      { from: 6, to: 6, shift: -7 },
-      { from: 7, to: 7, shift: -7 },
-      { from: 8, to: 8, shift: -7 },
-      { from: 9, to: 9, shift: 5 },
-      { from: 10, to: 10, shift: 5 },
-    ]);
-
-    compareMapped('Bb', 'Eb', [
-      { from: 1, to: 1, shift: 5 },
-      { from: 2, to: 2, shift: 5 },
-      { from: 3, to: 3, shift: -7 },
-      { from: 4, to: 4, shift: -7 },
-      {
-        from: 5,
-        to: 5,
-        shift: 5,
-        options: { shiftOpenStrings: true, expectedFingers: '1324' },
-      },
-      { from: 6, to: 6, shift: 5 },
-      { from: 7, to: 7, shift: 5 },
-      { from: 8, to: 8, shift: 5 },
-      { from: 9, to: 9, shift: -7 },
-      { from: 10, to: 10, shift: 5 },
-    ]);
-
-    compareMapped('Eb', 'Ab', [
-      { from: 1, to: 1, shift: -7 },
-      { from: 2, to: 2, shift: -7 },
-      { from: 3, to: 3, shift: 5 },
-      { from: 4, to: 4, shift: 5 },
-      { from: 5, to: 5, shift: 5 },
-      { from: 6, to: 6, shift: -7 },
-      { from: 7, to: 7, shift: -7 },
-      { from: 8, to: 8, shift: -7 },
-      { from: 9, to: 9, shift: 5 },
-      { from: 10, to: 10, shift: -7 },
-    ]);
-
-    ['Gb', 'Db', 'Bb', 'Eb', 'Ab'].map((key) => {
-      const positions = getChord(key, '9').positions;
-
-      [3, 6, 7, 8, 9].map((positionNumber) => {
-        const index = positionNumber - 1;
-
-        if (!positions[index]) return;
-
-        it(`${key}9 position ${positionNumber} should preserve source barre/capo semantics when barred`, () => {
-          if (positions[index].barres) {
-            expect(relativeBarres(positions[index])).toEqual([0]);
-            expect(positions[index].capo).toEqual(true);
-          }
         });
       });
     });
