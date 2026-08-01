@@ -32,7 +32,15 @@ jobs:
         run: npm run build
 
       - name: Rerun cavaquinho tests after build
-        run: npm test -- --runInBand src/db/cavaquinho.test.js src/db/cavaquinho.6.test.js src/db/cavaquinho.dim.test.js src/db/cavaquinho.dim7.test.js src/db/cavaquinho.m7b5.test.js src/db/cavaquinho.sus4.test.js src/db/cavaquinho.suffix-contract.test.js
+        run: >-
+          npx jest --runInBand
+          src/db/cavaquinho.test.js
+          src/db/cavaquinho.6.test.js
+          src/db/cavaquinho.dim.test.js
+          src/db/cavaquinho.dim7.test.js
+          src/db/cavaquinho.m7b5.test.js
+          src/db/cavaquinho.sus4.test.js
+          src/db/cavaquinho.suffix-contract.test.js
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4

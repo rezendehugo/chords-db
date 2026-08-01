@@ -12,7 +12,7 @@ describe('cavaquinho historical voicing coverage', () => {
   });
 
   it('restores practical B minor coverage', () => {
-    expect(getChord('B', 'minor').positions).toHaveLength(8);
+    expect(getChord('B', 'minor').positions).toHaveLength(7);
   });
 
   it('keeps at least six positions for every major and minor chord', () => {

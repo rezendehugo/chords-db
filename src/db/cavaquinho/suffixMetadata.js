@@ -55,4 +55,9 @@ export default {
     symbol: 'm(add9)',
     aliases: ['madd9', 'minadd9', 'menor adicionada9'],
   },
+  mmaj7: {
+    label: 'Menor com sétima maior',
+    symbol: 'm(7M)',
+    aliases: ['m(maj7)', 'mM7', 'mmaj7', 'menor com sétima maior'],
+  },
 };
