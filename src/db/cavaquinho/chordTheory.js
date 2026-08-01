@@ -61,6 +61,7 @@ export const chordDefinitions = {
   m9: { intervals: [0, 2, 3, 7, 10], essential: [2, 3, 10] },
   maj9: { intervals: [0, 2, 4, 7, 11], essential: [2, 4, 11] },
   madd9: { intervals: [0, 2, 3, 7], essential: [0, 2, 3] },
+  mmaj7: { intervals: [0, 3, 7, 11], essential: [0, 3, 11] },
 };
 
 export function fretValues(position) {
@@ -99,9 +100,20 @@ export function classifyVoicing(position, key, suffix) {
   const missingEssential = essential.filter((note) => !played.includes(note));
   const root = noteNumbers[key];
 
+  const missingOnlyRoot =
+    missingEssential.length === 1 && missingEssential[0] === root;
+  const acceptedDim7Omission =
+    suffix === 'dim7' &&
+    additions.length === 0 &&
+    missingEssential.length === 1;
+
   let classification = 'complete';
   if (additions.length > 0) classification = 'additional';
-  else if (omissions.length > 0 && missingEssential.length === 0) {
+  else if (missingOnlyRoot) classification = 'rootless';
+  else if (
+    omissions.length > 0 &&
+    (missingEssential.length === 0 || acceptedDim7Omission)
+  ) {
     classification = 'incomplete';
   } else if (missingEssential.length > 0) classification = 'invalid';
 

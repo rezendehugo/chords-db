@@ -33,5 +33,9 @@ describe('cavaquinho Portuguese suffix metadata', () => {
     });
     expect(suffixMetadata.maj9.symbol).toEqual('7M(9)');
     expect(suffixMetadata.madd9.symbol).toEqual('m(add9)');
+    expect(suffixMetadata.mmaj7).toMatchObject({
+      symbol: 'm(7M)',
+      aliases: expect.arrayContaining(['m(maj7)', 'mM7', 'mmaj7']),
+    });
   });
 });

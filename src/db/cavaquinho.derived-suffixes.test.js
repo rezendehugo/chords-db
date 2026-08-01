@@ -23,6 +23,7 @@ describe('cavaquinho derived suffixes', () => {
         'm9',
         'maj9',
         'madd9',
+        'mmaj7',
       ])
     );
   });
@@ -67,7 +68,10 @@ describe('cavaquinho derived suffixes', () => {
       const positions = getChord(key, '7').positions;
       const validatedPositions = positions.filter((position) => {
         const analysis = classifyVoicing(position, key, '7');
-        return analysis.additions.length === 0 && analysis.missingEssential.length === 0;
+        return (
+          analysis.additions.length === 0 &&
+          analysis.missingEssential.length === 0
+        );
       });
       expect(validatedPositions.length).toBeGreaterThanOrEqual(3);
     });
@@ -148,11 +152,25 @@ describe('cavaquinho derived suffixes', () => {
     ).toEqual(['rooted', 'fewer', 'earlier', 'later']);
   });
 
-  it.each(['aug', 'madd9'])(
-    'does not invent %s shapes when the source corpus has no compatible voicing',
+  it.each(['aug', 'madd9', 'mmaj7'])(
+    'publishes four to six reviewed %s shapes in every key',
     (suffix) => {
       Object.keys(cavaquinho.chords).forEach((key) => {
-        expect(getChord(key, suffix).positions).toEqual([]);
+        const positions = getChord(key, suffix).positions;
+        expect(positions.length).toBeGreaterThanOrEqual(4);
+        expect(positions.length).toBeLessThanOrEqual(6);
+        positions.forEach((position) => {
+          const analysis = classifyVoicing(position, key, suffix);
+          const fretted = position.frets.filter((fret) => fret > 0);
+          expect(analysis.additions).toEqual([]);
+          expect(analysis.missingEssential).toEqual([]);
+          expect(
+            position.frets.filter((fret) => fret >= 0).length
+          ).toBeGreaterThanOrEqual(3);
+          expect(
+            Math.max(...fretted) - Math.min(...fretted)
+          ).toBeLessThanOrEqual(4);
+        });
       });
     }
   );

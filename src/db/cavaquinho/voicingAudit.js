@@ -6,6 +6,8 @@ import {
   fretValues,
   getPlayedMidi,
 } from './chordTheory';
+import { buildSourceReview } from './normalizeSourceVoicings';
+import sourceChords from './chords/source';
 
 const pitchClassNames = [
   'C',
@@ -57,6 +59,7 @@ function auditPosition(key, suffix, position, index) {
 
   return {
     index: index + 1,
+    origin: position.generated ? 'generated-approved' : 'manual-source',
     frets: fretValues(position),
     midi,
     notes: midi.map((note) => pitchClassNames[note % 12]),
@@ -111,6 +114,7 @@ export function buildCavaquinhoVoicingAudit() {
         shapes: result.shapes + entry.positions.length,
         complete: result.complete + (counts.complete || 0),
         incomplete: result.incomplete + (counts.incomplete || 0),
+        rootless: result.rootless + (counts.rootless || 0),
         additional: result.additional + (counts.additional || 0),
         invalid: result.invalid + (counts.invalid || 0),
       };
@@ -120,10 +124,15 @@ export function buildCavaquinhoVoicingAudit() {
       shapes: 0,
       complete: 0,
       incomplete: 0,
+      rootless: 0,
       additional: 0,
       invalid: 0,
     }
   );
 
-  return { summary, entries };
+  return {
+    summary,
+    entries,
+    sourceReview: buildSourceReview(sourceChords),
+  };
 }

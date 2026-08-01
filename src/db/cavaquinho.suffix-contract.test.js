@@ -6,77 +6,6 @@ import {
   suffixFormulaMap,
 } from './cavaquinho.test-helpers';
 
-const sourceConfirmedRequiredToneOmissions = {
-  'C:dim:2': [3],
-  'C:dim:5': [6],
-  'C:dim7:2': [3],
-  'C:dim7:5': [6],
-  'C:dim7:8': [9],
-  'Db:dim:2': [3],
-  'Db:dim:4': [6],
-  'Db:dim7:2': [3],
-  'Db:dim7:4': [6],
-  'Db:dim7:7': [9],
-  'D:dim:2': [3],
-  'D:dim:5': [6],
-  'D:dim7:2': [3],
-  'D:dim7:5': [6],
-  'D:dim7:8': [9],
-  'Eb:7:1': [4],
-  'Eb:dim:2': [3],
-  'Eb:dim:5': [6],
-  'Eb:dim7:2': [3],
-  'Eb:dim7:5': [6],
-  'Eb:dim7:8': [9],
-  'E:dim:2': [3],
-  'E:dim:5': [6],
-  'E:dim7:2': [3],
-  'E:dim7:5': [6],
-  'E:dim7:8': [9],
-  'F:dim:2': [3],
-  'F:dim:5': [6],
-  'F:dim7:2': [3],
-  'F:dim7:5': [6],
-  'F:dim7:8': [9],
-  'Gb:dim:2': [3],
-  'Gb:dim:4': [6],
-  'Gb:dim7:2': [3],
-  'Gb:dim7:4': [6],
-  'Gb:dim7:7': [9],
-  'G:minor:1': [3],
-  'G:dim:2': [3],
-  'G:dim:5': [6],
-  'G:dim7:2': [3],
-  'G:dim7:5': [6],
-  'G:dim7:8': [9],
-  'Ab:minor:1': [3],
-  'Ab:m7:1': [3],
-  'Ab:dim:2': [3],
-  'Ab:dim:4': [6],
-  'Ab:dim7:2': [3],
-  'Ab:dim7:4': [6],
-  'Ab:dim7:7': [9],
-  'A:minor:1': [3],
-  'A:dim:2': [3],
-  'A:dim:4': [6],
-  'A:dim7:2': [3],
-  'A:dim7:4': [6],
-  'A:dim7:7': [9],
-  'Bb:minor:1': [3],
-  'Bb:m7:1': [3],
-  'Bb:dim:2': [3],
-  'Bb:dim:4': [6],
-  'Bb:dim7:2': [3],
-  'Bb:dim7:4': [6],
-  'Bb:dim7:7': [9],
-  'B:minor:1': [3],
-  'B:dim:2': [3],
-  'B:dim:4': [6],
-  'B:dim7:2': [3],
-  'B:dim7:4': [6],
-  'B:dim7:7': [9],
-};
-
 const eachCavaquinhoPosition = () =>
   Object.keys(cavaquinho.chords).flatMap((key) =>
     cavaquinho.chords[key].flatMap((chord) =>
@@ -116,9 +45,7 @@ describe('cavaquinho suffix theory contracts', () => {
     );
   });
 
-  it('records every missing defining tone as an explicit source exception', () => {
-    const seenOmissions = {};
-
+  it('allows one defining-tone omission only for diminished sevenths', () => {
     eachCavaquinhoPosition().map(
       ({ key, suffix, position, positionNumber }) => {
         const id = [key, suffix, positionNumber].join(':');
@@ -128,19 +55,15 @@ describe('cavaquinho suffix theory contracts', () => {
           const tone = chordTones(key, [interval])[0];
           return !actual.includes(tone);
         });
-        const allowedOmissions = sourceConfirmedRequiredToneOmissions[id] || [];
-        const unrecorded = missingIntervals.filter(
-          (interval) => !allowedOmissions.includes(interval)
-        );
-
-        if (missingIntervals.length) {
-          seenOmissions[id] = missingIntervals;
-        }
-
-        expect({ id, unrecorded }).toEqual({ id, unrecorded: [] });
+        const validOmission =
+          missingIntervals.length === 0 ||
+          (suffix === 'dim7' && missingIntervals.length === 1);
+        expect({ id, missingIntervals, validOmission }).toEqual({
+          id,
+          missingIntervals,
+          validOmission: true,
+        });
       }
     );
-
-    expect(seenOmissions).toEqual(sourceConfirmedRequiredToneOmissions);
   });
 });

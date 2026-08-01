@@ -4,6 +4,10 @@ import {
   fretValues,
   isReusableVoicing,
 } from './chordTheory';
+import {
+  generateReviewedVoicings,
+  generatedSuffixes,
+} from './generatedVoicings';
 
 const derivedSuffixes = [
   'm6',
@@ -14,6 +18,7 @@ const derivedSuffixes = [
   'm9',
   'maj9',
   'madd9',
+  'mmaj7',
 ];
 
 const expandedSuffixes = [...derivedSuffixes, '9', 'm7', 'sus2'];
@@ -120,6 +125,9 @@ export function deriveSuffixVoicings(chordsByKey) {
             ? matchingPositions(sourcePositions, key, chord.suffix)
             : uniquePositions(
                 chord.positions.concat(
+                  generatedSuffixes.includes(chord.suffix)
+                    ? generateReviewedVoicings(key, chord.suffix)
+                    : [],
                   expandedSuffixes.includes(chord.suffix)
                     ? matchingPositions(sourcePositions, key, chord.suffix)
                     : [],
@@ -134,7 +142,9 @@ export function deriveSuffixVoicings(chordsByKey) {
         .map((suffix) => ({
           key,
           suffix,
-          positions: matchingPositions(sourcePositions, key, suffix),
+          positions: generatedSuffixes.includes(suffix)
+            ? generateReviewedVoicings(key, suffix)
+            : matchingPositions(sourcePositions, key, suffix),
         }));
 
       return [key, expandedChords.concat(newChords)];

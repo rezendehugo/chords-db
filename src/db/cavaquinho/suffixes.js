@@ -19,4 +19,5 @@ export default [
   'm9',
   'maj9',
   'madd9',
+  'mmaj7',
 ];
