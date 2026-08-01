@@ -35,6 +35,14 @@ describe('cavaquinho chord theory', () => {
     expect(isReusableVoicing(position, 'C', 'dim')).toEqual(false);
   });
 
+  it('classifies a diminished seventh with one omitted tone as incomplete', () => {
+    const analysis = classifyVoicing({ frets: [1, 2, 7, -1] }, 'C', 'dim7');
+
+    expect(analysis.classification).toEqual('incomplete');
+    expect(analysis.omissions).toEqual([0]);
+    expect(analysis.additions).toEqual([]);
+  });
+
   it('preserves MIDI pitches for a physical position', () => {
     expect(getPlayedMidi({ frets: [5, 4, 0, 1] })).toEqual([55, 59, 59, 63]);
   });

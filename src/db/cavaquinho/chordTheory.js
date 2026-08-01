@@ -109,10 +109,11 @@ export function classifyVoicing(position, key, suffix) {
 
   let classification = 'complete';
   if (additions.length > 0) classification = 'additional';
+  else if (acceptedDim7Omission) classification = 'incomplete';
   else if (missingOnlyRoot) classification = 'rootless';
   else if (
     omissions.length > 0 &&
-    (missingEssential.length === 0 || acceptedDim7Omission)
+    missingEssential.length === 0
   ) {
     classification = 'incomplete';
   } else if (missingEssential.length > 0) classification = 'invalid';
